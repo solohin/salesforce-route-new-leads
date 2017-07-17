@@ -1,0 +1,59 @@
+<aura:component controller="LeadRoutingRulesController">
+    <aura:attribute name="usersList" default="[]" type="User[]"/>
+    <aura:attribute name="rule" default="{'sobjectType':'LeadRoutingRule__c'}"
+                    type="LeadRoutingRule__c"/>
+    <aura:attribute name="showForm" type="Boolean" default="false"/>
+    <aura:registerEvent name="itemUpdate" type="c:LeadRoutingRuleUpdated"/>
+
+    <aura:if isTrue="{! !v.showForm }">
+        <br/>
+        <lightning:button label="Add new rule"
+                          class="slds-button slds-button--brand" onclick="{!c.showForm}"/>
+    </aura:if>
+
+    <aura:if isTrue="{!v.showForm}">
+        <div aria-labelledby="newexpenseform">
+
+            <fieldset class="slds-box slds-theme--default slds-container--small">
+
+                <legend id="newexpenseform" class="slds-text-heading--small slds-p-vertical--medium">
+                {! v.rule.Id ? 'Edit' : 'Add' } rule
+                </legend>
+
+                <form class="slds-form--stacked">
+
+                    <div class="slds-form-element slds-is-required">
+                        <label class="slds-form-element__label">Select User</label>
+                        <div class="slds-form-element__control">
+                            <div class="slds-select_container">
+                                <ui:inputSelect class="slds-select" aura:id="selectUser"
+                                                value="{!v.rule.UserId__c }">
+                                    <ui:inputSelectOption text="" label="-- Not selected --"/>
+                                    <aura:iteration items="{!v.usersList}" var="User">
+                                        <ui:inputSelectOption text="{!User.Id}" label="{!User.Name}"/>
+                                    </aura:iteration>
+                                </ui:inputSelect>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label">Textarea Label</label>
+                        <div class="slds-form-element__control">
+                            <ui:inputTextArea aura:id="domains" class="slds-textarea"
+                                              placeholder="Placeholder Text" value="{!v.rule.Domains__c }"/>
+                        </div>
+                    </div>
+
+                    <div class="slds-form-element">
+                        <lightning:button label="Save rule"
+                                   class="slds-button slds-button--brand" onclick="{!c.saveRule}"/>
+                    </div>
+
+                </form>
+
+            </fieldset>
+
+        </div>
+    </aura:if>
+</aura:component>

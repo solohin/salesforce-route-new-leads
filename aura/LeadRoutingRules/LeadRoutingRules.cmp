@@ -1,0 +1,66 @@
+<aura:component controller="LeadRoutingRulesController">
+    <aura:handler name="itemUpdate" event="c:LeadRoutingRuleUpdated" action="{!c.onRoutingItemUpdated}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="rules" default="[]" type="LeadRoutingRule__c[]"/>
+    <aura:attribute name="rule" default="{'sobjectType':'LeadRoutingRule__c'}"
+                    type="LeadRoutingRule__c"/>
+    <aura:attribute name="usersList" type="User[]" default="[]"/>
+    <aura:attribute name="showForm" type="Boolean" default="false"/>
+
+
+    <div class="slds-page-header" role="banner">
+        <div class="slds-grid">
+            <div class="slds-col">
+                <p class="slds-text-heading--label">Lead routing</p>
+                <h1 class="slds-text-heading--medium">Route leads to sales managers</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="slds-col slds-col--padded slds-p-top--large">
+        <c:LeadRoutingRulesForm rule="{!v.rule}" usersList="{!v.usersList}" showForm="{!v.showForm}"/>
+
+        <br/><br/><!--so dirty-->
+     
+        <table class="slds-table slds-table--bordered slds-table--striped slds-table--cell-buffer slds-table--fixed-layout">
+            <thead>
+            <tr class="slds-text-heading--label">
+                <th scope="col">
+                    <div class="slds-truncate" title="User">User</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Domains">Domains</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Delete">Edit</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Edit">Delete</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Use the Apex model and controller to fetch server side data -->
+            <aura:iteration items="{!v.rules}" var="rule">
+                <tr>
+                    <th scope="row">
+                        <c:NameById itemsList="{!v.usersList}" id="{!rule.UserId__c}"/>
+                    </th>
+                    <td>
+                        <div class="custom-multilineCell" title="{!rule.Domains__c}">{!rule.Domains__c}</div>
+                    </td>
+                    <td>
+                        <lightning:button label="Edit" value="{!rule.Id}" iconName="utility:edit" iconPosition="left"
+                                          variant="neutral" onclick="{!c.editRule}"/>
+                    </td>
+                    <td>
+                        <lightning:button label="Delete" value="{!rule.Id}" iconName="utility:delete" iconPosition="left"
+                                          variant="destructive" onclick="{!c.removeRule}"/>
+                    </td>
+                </tr>
+            </aura:iteration>
+            </tbody>
+        </table>
+    </div>
+
+</aura:component>

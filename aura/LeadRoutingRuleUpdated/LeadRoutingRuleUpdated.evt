@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Update of LeadRoutingRule__c object">
+	<aura:attribute name="rule" type="LeadRoutingRule__c.object"/>
+    <aura:attribute name="isInsert" type="LeadRoutingRule__c.object"/>
+</aura:event>
